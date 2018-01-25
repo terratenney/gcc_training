@@ -73,7 +73,7 @@
             <div class="tab-wrapper">
                 <ul class="tab-bar">
                     <li data-active="true" data-tab="filters">Filters</li>
-    <li data-tab="legend">Occupancy Status</li>
+                    <li data-tab="legend">Occupancy Dash</li>
                 </ul>
                 <div class="tabs">
                     <div data-active="true" data-tab="filters">
@@ -361,39 +361,104 @@ var iconr = L.icon({
 
 
 
-
-
 L.esri.basemapLayer('Gray').addTo(map);
 var fl = L.esri.featureLayer({
     url: '//gis.toronto.ca/arcgis/rest/services/secondary/cot_geospatial_webm/MapServer/122/',
     useCors: false,
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function(feature, latlng) { 
+        var colorValue = Math.random() * 360;
+        var options = {
+            color: '#000',
+            weight: 1,
+            fillColor: 'hsl(' + colorValue + ',100%,50%)',
+            radius: 20,
+            fillOpacity: 0.7,
+            rotation: 0.0,
+            position: {
+                x: 0,
+                y: 0
+            },
+            offset: 0,
+            numberOfSides: 50,
+            barThickness: 10
+        };
 
+        options.data = {
+            'dataPoint1': feature.properties.CAPACITY * .20,
+            'dataPoint2': Math.random() * 20,
+            'dataPoint3': Math.random() * 20,
+            'dataPoint4': Math.random() * 20
+        };
 
+        options.chartOptions = {
+            'dataPoint1': {
+                fillColor: '#F1EEF6',
+                minValue: 0,
+                maxValue: 20,
+                maxHeight: 20,
+                displayText: function (value) {
+                    return value.toFixed(2);
+                }
+            },
+            'dataPoint2': {
+                fillColor: '#BDC9E1',
+                minValue: 0,
+                maxValue: 20,
+                maxHeight: 20,
+                displayText: function (value) {
+                    return value.toFixed(2);
+                }
+            },
+            'dataPoint3': {
+                fillColor: '#74A9CF',
+                minValue: 0,
+                maxValue: 20,
+                maxHeight: 20,
+                displayText: function (value) {
+                    return value.toFixed(2);
+                }
+            },
+            'dataPoint4': {
+                fillColor: '#0570B0',
+                minValue: 0,
+                maxValue: 20,
+                maxHeight: 20,
+                displayText: function (value) {
+                    return value.toFixed(2);
+                }
+            }
+        };
 
-        feature.properties['Overflow'] = Math.round(feature.properties['CAPACITY'] * .20);
-        if (feature.properties.CAPACITY < 50) {
-            marker = L.marker(latlng, {
-                icon: icong
-            });
-        } else if (feature.properties.CAPACITY <= 75) {
-            marker = L.marker(latlng, {
-                icon: iconr
-            });
-        } else if (feature.properties.ratings > 200) {
-            marker = L.marker(latlng, {
-                icon: icong
-            });
-        } else {
-            marker = L.marker(latlng, {
-                icon: icony
-            });
-        }
-        return marker;
-        return L.marker(latlng, {
-            icon: icon
-        });
+        return new L.PieChartMarker(latlng, options);
     }
+
+    // function(feature, latlng) {
+
+
+
+    //     feature.properties['Overflow'] = Math.round(feature.properties['CAPACITY'] * .20);
+    //     if (feature.properties.CAPACITY < 50) {
+    //         marker = L.marker(latlng, {
+    //             icon: icong
+    //         });
+    //     } else if (feature.properties.CAPACITY <= 75) {
+    //         marker = L.marker(latlng, {
+    //             icon: iconr
+    //         });
+    //     } else if (feature.properties.ratings > 200) {
+    //         marker = L.marker(latlng, {
+    //             icon: icong
+    //         });
+    //     } else {
+    //         marker = L.marker(latlng, {
+    //             icon: icony
+    //         });
+    //     }
+    //     return marker;
+    //     return L.marker(latlng, {
+    //         icon: icon
+    //     });
+    // }
 }).addTo(map);
 
 fl.bindPopup(function(layer) {
