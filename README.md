@@ -1,3 +1,7 @@
+
+#Demos
+version 1: https://terratenney.github.io/gcc_training/
+version 2: https://terratenney.github.io/gcc_training/index1.html 
 # Toronto Shelter Map
 
 Mapping the capacity and current occupancy of City of Toronto emergency shelters.
